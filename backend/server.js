@@ -29,10 +29,20 @@ app.post('/adjust', (req, res) => {
 
 // POST /reboot — reinicia el sistema con una nueva temperatura objetivo
 // Nota: la lógica de validación de entrada (rango 1-100, 400) la implementa la Parte B
+let contadorReinicios = 0;
 app.post('/reboot', (req, res) => {
-  temperaturaObjetivo = Math.floor(Math.random() * 100) + 1;
-  console.log(`Sistema reiniciado. Nueva temperatura: ${temperaturaObjetivo}`);
-  return res.status(200).json({ mensaje: 'Sistema reiniciado correctamente' });
+    temperaturaObjetivo = Math.floor(Math.random() * 100) + 1;
+    contadorReinicios++;
+
+    console.log(`Sistema reiniciado. Nueva temperatura: ${temperaturaObjetivo}`);
+    console.log(`Contador de reinicios del reactor: ${contadorReinicios}`);
+
+    return res.status(200).json({
+        mensaje: 'Sistema reiniciado correctamente',
+        nuevaTemperatura: temperaturaObjetivo,
+        reinicios: contadorReinicios,
+        estado: 'Reiniciado'
+    });
 });
 
 app.listen(PORT, () => {
