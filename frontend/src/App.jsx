@@ -1,4 +1,7 @@
 import { useState } from 'react'
+import FormularioAjuste from './components/FormularioAjuste'
+import MensajeEstado from './components/MensajeEstado'
+import HistorialLista from './components/HistorialLista'
 
 const API_URL = 'http://localhost:3000'
 
@@ -11,32 +14,24 @@ function App() {
 
   async function ajustarTemperatura(evento) {
     evento.preventDefault()
-
     if (temperatura === '' || estabilizado || cargando) return
 
     const numero = Number(temperatura)
-
     if (!Number.isInteger(numero) || numero < 1 || numero > 100) {
       setMensaje('Ingresá un número entero entre 1 y 100.')
       return
     }
 
     setCargando(true)
-
     try {
       const respuesta = await fetch(`${API_URL}/adjust`, {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ temperatura: numero }),
       })
-
       const datos = await respuesta.json()
 
-      if (!respuesta.ok) {
-        throw new Error(datos.mensaje || 'No se pudo enviar el ajuste.')
-      }
+      if (!respuesta.ok) throw new Error(datos.mensaje || 'No se pudo enviar el ajuste.')
 
       setHistorial((anterior) => [...anterior, numero])
       setMensaje(datos.mensaje)
@@ -51,19 +46,12 @@ function App() {
 
   async function reiniciarReactor() {
     if (cargando) return
-
     setCargando(true)
-
     try {
-      const respuesta = await fetch(`${API_URL}/reboot`, {
-        method: 'POST',
-      })
-
+      const respuesta = await fetch(`${API_URL}/reboot`, { method: 'POST' })
       const datos = await respuesta.json()
 
-      if (!respuesta.ok) {
-        throw new Error(datos.mensaje || 'No se pudo reiniciar el reactor.')
-      }
+      if (!respuesta.ok) throw new Error(datos.mensaje || 'No se pudo reiniciar el reactor.')
 
       setHistorial([])
       setMensaje(datos.mensaje)
@@ -77,45 +65,32 @@ function App() {
   }
 
   return (
-    <main>
-      <h1>Estabiliza el Reactor</h1>
-      <p>Ingresá una temperatura entre 1 y 100.</p>
+    <div className="min-h-screen bg-gray-100 flex items-center justify-center p-4">
+      <main className="bg-white p-8 rounded-xl shadow-lg w-full max-w-md">
+        <h1 className="text-2xl font-bold text-center text-gray-800 mb-2">
+          Estabiliza el Reactor
+        </h1>
+        <p className="text-center text-gray-500 mb-6 text-sm">
+          Ingresá una temperatura entre 1 y 100.
+        </p>
 
-      <form onSubmit={ajustarTemperatura}>
-        <label htmlFor="temperatura">Temperatura:</label>{' '}
-        <input
-          id="temperatura"
-          type="number"
-          min="1"
-          max="100"
-          step="1"
-          value={temperatura}
-          onChange={(evento) => setTemperatura(evento.target.value)}
-          disabled={estabilizado || cargando}
-          required
+        <FormularioAjuste 
+          temperatura={temperatura} 
+          setTemperatura={setTemperatura} 
+          onSubmit={ajustarTemperatura} 
+          deshabilitado={estabilizado || cargando} 
         />
-        <button type="submit" disabled={estabilizado || cargando}>
-          Ajustar
-        </button>
-      </form>
 
-      {mensaje && <p role="status">{mensaje}</p>}
+        <MensajeEstado 
+          mensaje={mensaje} 
+          estabilizado={estabilizado} 
+          onReiniciar={reiniciarReactor} 
+          cargando={cargando} 
+        />
 
-      <h2>Historial de intentos</h2>
-      {historial.length === 0 ? (
-        <p>Todavía no hay intentos.</p>
-      ) : (
-        <ul>
-          {historial.map((intento, indice) => (
-            <li key={indice}>{intento}</li>
-          ))}
-        </ul>
-      )}
-
-      <button type="button" onClick={reiniciarReactor} disabled={cargando}>
-        Reiniciar reactor
-      </button>
-    </main>
+        <HistorialLista historial={historial} />
+      </main>
+    </div>
   )
 }
 
