@@ -3,7 +3,7 @@ import FormularioAjuste from './components/FormularioAjuste'
 import MensajeEstado from './components/MensajeEstado'
 import HistorialLista from './components/HistorialLista'
 
-const API_URL = 'http://localhost:3000'
+const API_URL = import.meta.env.VITE_API_URL ?? 'http://localhost:3000'
 
 function App() {
   const [temperatura, setTemperatura] = useState('')

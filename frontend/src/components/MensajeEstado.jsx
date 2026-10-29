@@ -1,4 +1,3 @@
-import React from 'react';
 const MensajeEstado = ({ mensaje, estabilizado, onReiniciar, cargando }) => {
   if (!mensaje && !estabilizado) return null;
   return (

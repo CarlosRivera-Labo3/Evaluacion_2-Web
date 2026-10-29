@@ -1,4 +1,3 @@
-import React from 'react';
 const FormularioAjuste = ({ temperatura, setTemperatura, onSubmit, deshabilitado }) => (
   <form onSubmit={onSubmit} className="flex flex-col gap-4 mb-6">
     <div className="flex flex-col gap-2">

@@ -1,4 +1,3 @@
-import React from 'react';
 const HistorialLista = ({ historial }) => (
   <div className="border border-gray-200 rounded-lg p-4 bg-gray-50">
     <h2 className="text-lg font-bold mb-3 text-gray-700">Historial de intentos</h2>
