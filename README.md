@@ -148,7 +148,7 @@ Al pulsar **Reiniciar reactor** se llama a `/reboot`, se limpia el historial y s
 - La validación del rango se hace en el frontend (para dar respuesta inmediata) y también en el backend (que es la que cuenta).
 
 ## Equipo
-Carlos Rigoberto Rivera García 00165524
-Orlando Emmanuel Herrera Estrada 00084420
-Gabriel André Guerrero Rivas 00112824 
-Javier Omar Ramírez Villanueva 00016824
+-Carlos Rigoberto Rivera García 00165524
+-Orlando Emmanuel Herrera Estrada 00084420
+-Gabriel André Guerrero Rivas 00112824 
+-Javier Omar Ramírez Villanueva 00016824
