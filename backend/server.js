@@ -7,12 +7,12 @@ const PORT = 3000;
 app.use(cors());
 app.use(express.json());
 
-// Temperatura objetivo generada aleatoriamente al iniciar el servidor (1-100)
+
 let temperaturaObjetivo = Math.floor(Math.random() * 100) + 1;
 
 console.log(`Servidor iniciado. Temperatura de estabilización: ${temperaturaObjetivo}`);
 
-// POST /adjust — recibe la temperatura del cliente y compara con la objetivo
+
 app.post('/adjust', (req, res) => {
   const { temperatura } = req.body;
 
@@ -27,8 +27,7 @@ app.post('/adjust', (req, res) => {
   return res.status(200).json({ mensaje: 'más baja', exito: false });
 });
 
-// POST /reboot — reinicia el sistema con una nueva temperatura objetivo
-// Nota: la lógica de validación de entrada (rango 1-100, 400) la implementa la Parte B
+
 let contadorReinicios = 0;
 app.post('/reboot', (req, res) => {
     temperaturaObjetivo = Math.floor(Math.random() * 100) + 1;
