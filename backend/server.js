@@ -2,9 +2,11 @@ const express = require('express');
 const cors = require('cors');
 
 const app = express();
-const PORT = process.env.PORT || 3000;
 
-app.use(cors({ origin: process.env.FRONTEND_URL || 'http://localhost:5173' }));
+const PORT = process.env.PORT || 3000;
+const FRONTEND_URL = process.env.FRONTEND_URL || 'http://localhost:5173';
+
+app.use(cors({ origin: FRONTEND_URL }));
 app.use(express.json());
 
 const generarTemperatura = () => Math.floor(Math.random() * 100) + 1;
@@ -16,7 +18,7 @@ console.log(`Servidor iniciado. Temperatura de estabilización: ${temperaturaObj
 
 
 app.post('/adjust', (req, res) => {
-  const { temperatura } = req.body;
+  const { temperatura } = req.body ?? {};
 
   if (!Number.isInteger(temperatura) || temperatura < 1 || temperatura > 100) {
     return res.status(400).json({
