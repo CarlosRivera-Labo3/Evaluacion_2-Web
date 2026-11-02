@@ -1,14 +1,3 @@
-const express = require('express');
-const cors = require('cors');
-
-const app = express();
-
-const PORT = process.env.PORT || 3000;
-const FRONTEND_URL = process.env.FRONTEND_URL || 'http://localhost:5173';
-
-app.use(cors({ origin: FRONTEND_URL }));
-app.use(express.json());
-
 const generarTemperatura = () => Math.floor(Math.random() * 100) + 1;
 
 let temperaturaObjetivo = generarTemperatura();
@@ -17,7 +6,7 @@ let contadorReinicios = 0;
 console.log(`Servidor iniciado. Temperatura de estabilización: ${temperaturaObjetivo}`);
 
 
-app.post('/adjust', (req, res) => {
+export const ajustar = (req, res) => {
   const { temperatura } = req.body ?? {};
 
   if (!Number.isInteger(temperatura) || temperatura < 1 || temperatura > 100) {
@@ -35,9 +24,9 @@ app.post('/adjust', (req, res) => {
     mensaje: temperatura < temperaturaObjetivo ? 'más alta' : 'más baja',
     exito: false,
   });
-});
+};
 
-app.post('/reboot', (req, res) => {
+export const reiniciar = (req, res) => {
  temperaturaObjetivo = generarTemperatura();
   contadorReinicios++;
 
@@ -48,8 +37,4 @@ app.post('/reboot', (req, res) => {
     mensaje: 'Sistema reiniciado correctamente',
     estado: 'Reiniciado',
   });
-});
-
-app.listen(PORT, () => {
-  console.log(`Servidor corriendo en http://localhost:${PORT}`);
-});
+};
