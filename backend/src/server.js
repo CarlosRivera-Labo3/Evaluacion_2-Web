@@ -1,7 +1,7 @@
 import express from "express";
 import cors from "cors";
 import reactorRoutes from "./routes/reactor.routes.js"
-import astroLRoutes from "./routes/carga.routes.js"
+import cargaRoutes from "./routes/carga.routes.js"
 
 const express = require('express');
 const cors = require('cors');
@@ -15,7 +15,7 @@ app.use(cors({ origin: FRONTEND_URL }));
 app.use(express.json());
 
 app.use("/", reactorRoutes);
-app.use("/api",astroLRoutes);
+app.use("/api",cargaRoutes);
 
 
 app.listen(PORT, () => {
