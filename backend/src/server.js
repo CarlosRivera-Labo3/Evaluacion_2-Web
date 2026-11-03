@@ -3,8 +3,7 @@ import cors from "cors";
 import reactorRoutes from "./routes/reactor.routes.js"
 import cargaRoutes from "./routes/carga.routes.js"
 
-const express = require('express');
-const cors = require('cors');
+
 
 const app = express();
 

@@ -1,4 +1,4 @@
-import { estado,Presupuesto, reiniciarEstado } from "../data/estado";
+import { estado, Presupuesto, reiniciarEstado } from "../data/estado.js";
 
 
 const redondear = (n) => Number(n.toFixed(2));
