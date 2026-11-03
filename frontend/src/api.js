@@ -26,3 +26,17 @@ export function agregarCarga(equipoId, cantidad = 1) {
     body: JSON.stringify({ equipoId, cantidad }),
   })
 }
+
+export function actualizarUnidades(equipoId, cantidad) {
+  return solicitar(`/api/carga/actualizar-unidades/${equipoId}`, {
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ cantidad }), 
+  })
+}
+
+export function eliminarCarga(equipoId) {
+  return solicitar(`/api/carga/eliminar/${equipoId}`, {
+    method: 'DELETE',
+  })
+}
