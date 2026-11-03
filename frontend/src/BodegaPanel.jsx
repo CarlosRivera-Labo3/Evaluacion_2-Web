@@ -89,6 +89,7 @@ export default function BodegaPanel({
   }, 0)
 
   const cantidadTotalItems = itemsEnNave.reduce((acc, item) => acc + item.cantidad, 0)
+  const costoTotal = carga ? carga.total : 0
 
   if (sesionCerrada) {
     return (
@@ -125,7 +126,7 @@ export default function BodegaPanel({
         </div>
       </div>
 
-      <div className="flex-1 overflow-y-auto p-4 max-h-[50vh] min-h-[200px]">
+      <div className="flex-1 overflow-y-auto p-4 max-h-[40vh] min-h-[150px]">
         {itemsEnNave.length === 0 ? (
           <div className="flex h-full items-center justify-center text-sm text-slate-500">
             No hay items en la nave.
@@ -164,7 +165,7 @@ export default function BodegaPanel({
         )}
       </div>
 
-      <div className="border-t border-slate-800 p-4">
+      <div className="border-t border-slate-800 p-4 space-y-2">
         <div className="flex items-center justify-between text-sm">
           <span className="text-slate-400">Peso total:</span>
           {calculandoPeso ? (
@@ -172,6 +173,11 @@ export default function BodegaPanel({
           ) : (
             <span className="font-bold text-emerald-400">{pesoTotal.toFixed(2)} kg</span>
           )}
+        </div>
+
+        <div className="flex items-center justify-between text-sm">
+          <span className="text-slate-400">Costo total:</span>
+          <span className="font-bold text-cyan-400">{costoTotal.toFixed(2)} Cr</span>
         </div>
       </div>
     </div>
