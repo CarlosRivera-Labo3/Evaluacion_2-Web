@@ -1,5 +1,5 @@
-import { useEffect, useState } from 'react'
-import { obtenerInventario, obtenerCarga, actualizarUnidades, eliminarCarga } from './api'
+import { useEffect, useRef, useState } from 'react'
+import { obtenerInventario, obtenerCarga, actualizarUnidades, eliminarCarga, reiniciarSesion } from './api'
 
 export default function BodegaPanel({
   carga,
@@ -10,9 +10,17 @@ export default function BodegaPanel({
   cargando,
   setCargando,
 }) {
-  const [tiempoRestante, setTiempoRestante] = useState(60)
+  const [tiempoRestante, setTiempoRestante] = useState(300)
   const [sesionCerrada, setSesionCerrada] = useState(false)
   const [calculandoPeso, setCalculandoPeso] = useState(false)
+  const timerSincronizado = useRef(false)
+
+  useEffect(() => {
+    if (carga && !timerSincronizado.current) {
+      setTiempoRestante(carga.segundosRestantes)
+      timerSincronizado.current = true
+    }
+  }, [carga])
 
   useEffect(() => {
     if (tiempoRestante <= 0) {
@@ -94,17 +102,31 @@ export default function BodegaPanel({
   const cantidadTotalItems = itemsEnNave.reduce((acc, item) => acc + item.cantidad, 0)
   const costoTotal = carga ? carga.total : 0
 
+  async function manejarReiniciarSesion() {
+    setCargando(true)
+    try {
+      const nuevaCarga = await reiniciarSesion()
+      const nuevoInventario = await obtenerInventario()
+      setCarga(nuevaCarga)
+      setInventario(nuevoInventario)
+      setTiempoRestante(nuevaCarga.segundosRestantes)
+      setSesionCerrada(false)
+    } catch (err) {
+      setError(err.message)
+    } finally {
+      setCargando(false)
+    }
+  }
+
   if (sesionCerrada) {
     return (
       <div className="flex h-full min-h-[300px] flex-col items-center justify-center rounded-xl border border-red-900 bg-slate-900 p-6 text-white shadow-xl">
         <h2 className="mb-2 text-xl font-bold text-red-500">Sesión cerrada</h2>
         <p className="mb-6 text-center text-sm text-slate-400">La ventana de lanzamiento ha terminado.</p>
         <button
-          onClick={() => {
-            setTiempoRestante(60)
-            setSesionCerrada(false)
-          }}
-          className="rounded-lg bg-cyan-600 px-6 py-2 font-semibold text-white hover:bg-cyan-500"
+          onClick={manejarReiniciarSesion}
+          disabled={cargando}
+          className="rounded-lg bg-cyan-600 px-6 py-2 font-semibold text-white hover:bg-cyan-500 disabled:opacity-50"
         >
           Reiniciar
         </button>

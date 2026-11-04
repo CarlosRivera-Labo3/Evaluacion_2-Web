@@ -40,3 +40,7 @@ export function eliminarCarga(equipoId) {
     method: 'DELETE',
   })
 }
+
+export function reiniciarSesion() {
+  return solicitar('/api/sesion/reiniciar', { method: 'POST' })
+}
