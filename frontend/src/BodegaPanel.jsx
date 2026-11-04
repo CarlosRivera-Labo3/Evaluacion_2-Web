@@ -45,16 +45,19 @@ export default function BodegaPanel({
 
   async function manejarCantidad(equipoId, delta) {
     if (cargando) return
-    setCargando(true)
-    setError('')
-    try {
-      await actualizarUnidades(equipoId, delta)
-      await refrescarDatos()
-    } catch (err) {
-      setError(err.message)
-    } finally {
-      setCargando(false)
-    }
+   const item = itemsEnNave.find((i) => i.id === equipoId)
+  const nueva = item.cantidad + delta
+  if (nueva < 1) return            // para quitar el último, usar "Desembarcar"
+  setCargando(true)
+  setError('')
+  try {
+    await actualizarUnidades(equipoId, nueva)
+    await refrescarDatos()
+  } catch (err) {
+    setError(err.message)
+  } finally {
+    setCargando(false)
+  }
   }
 
   async function manejarDesembarcar(equipoId) {
